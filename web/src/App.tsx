@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { io } from "socket.io-client"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { useAuth } from "./contexts/Auth"
@@ -18,12 +18,18 @@ const App: React.FC = () => {
   const { register, handleSubmit, reset } = useForm<IMessage>()
   const { user } = useAuth()
 
+  useEffect(() => {
+    socket.on("receive_message", data => {
+      console.log(data)
+    })
+  }, [socket])
+
   const submitHandler = async (formData: IMessage) => {
     try {
       const { onSuccess } = await reqAuth(user)
       onSuccess(() => {
         reset()
-        console.log(formData)
+        socket.emit("send_message", formData)
       })
     } catch (error) {
       if (error instanceof Error) alert(error)
@@ -31,126 +37,73 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="h-screen bg-zinc-200 flex flex-col ">
+    <div className="h-screen bg-zinc-100 flex flex-col ">
       <Header />
       <div className="flex items-center justify-center">
         <div className="flex flex-col max-w-4xl w-full border-zinc-300 border-x shadow-lg h-full">
           <div className="h-[calc(100vh_-_48px)] relative grow bg-white overflow-hidden">
             <div className="overflow-x-hidden overflow-y-scroll flex flex-col gap-3 h-full scroll-thin">
-              <div className="px-5 ">
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
+              <div className="px-5 pt-5 flex flex-col gap-3">
+                <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300">
+                  <p className="text-stone-800 font-bold">Vitor</p>
+                  <p className="text-stone-600">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat suscipit minus nemo perspiciatis?
+                    Nobis sapiente sunt, in, omnis unde quibusdam debitis voluptatibus reprehenderit ut excepturi eos
+                    iure voluptate distinctio corrupti?
+                  </p>
                 </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
+                <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300">
+                  <p className="text-stone-800 font-bold">Vitor</p>
+                  <p className="text-stone-600">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat suscipit minus nemo perspiciatis?
+                    Nobis sapiente sunt, in, omnis unde quibusdam debitis voluptatibus reprehenderit ut excepturi eos
+                    iure voluptate distinctio corrupti?
+                  </p>
                 </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
+                <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300">
+                  <p className="text-stone-800 font-bold">Vitor</p>
+                  <p className="text-stone-600">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit
+                  </p>
                 </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
+                <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300 self-end">
+                  <p className="text-stone-800 font-bold text-right">Kauan</p>
+                  <p className="text-stone-600">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat suscipit minus nemo perspiciatis?
+                    Nobis sapiente sunt, in, omnis unde quibusdam debitis voluptatibus reprehenderit ut excepturi eos
+                    iure voluptate distinctio corrupti?
+                  </p>
                 </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
-                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
-                  laudantium accusantium sint?
-                </div>
-                <div>Lorem ips</div>um dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque
-                accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae
-                pariatur laudantium accusantium sint?
+                <div className="basis-[90px] shrink-0" />
               </div>
-              <div className="basis-[90px] shrink-0" />
+              <form
+                onSubmit={handleSubmit(submitHandler)}
+                className="p-6 flex flex-col absolute w-full bottom-0 bg-gradient-to-b from-transparent to-black/50"
+              >
+                {user ? (
+                  <input
+                    type="text"
+                    hidden
+                    {...register("username")}
+                    defaultValue={user.username}
+                  />
+                ) : null}
+                <div className="flex gap-4">
+                  <input
+                    type="text"
+                    {...register("message")}
+                    className="bg-white shadow-xl shadow-black/30 placeholder:text-zinc-500 outline-none px-6 py-2 rounded-lg border border-zinc-400 text-stone-800 w-full"
+                    placeholder="Sua mensagem..."
+                  />
+                  <button
+                    type="submit"
+                    className="bg-black rounded-lg w-fit ml-auto font-thin text-white px-6 py-2 shadow-lg shadow-black/30"
+                  >
+                    Enviar
+                  </button>
+                </div>
+              </form>
             </div>
-            <form
-              onSubmit={handleSubmit(submitHandler)}
-              className="p-6 flex flex-col absolute w-full bottom-0 bg-gradient-to-b from-transparent to-black/50"
-            >
-              {user ? (
-                <input
-                  type="text"
-                  hidden
-                  {...register("username")}
-                  defaultValue={user.username}
-                />
-              ) : null}
-              <div className="flex gap-4">
-                <input
-                  type="text"
-                  {...register("message")}
-                  className="bg-white shadow-xl shadow-black/30 placeholder:text-zinc-500 outline-none px-6 py-2 rounded-lg border border-zinc-400 text-stone-800 w-full"
-                  placeholder="Sua mensagem..."
-                />
-                <button
-                  type="submit"
-                  className="bg-black rounded-lg w-fit ml-auto font-thin text-white px-6 py-2 shadow-lg shadow-black/30"
-                >
-                  Enviar
-                </button>
-              </div>
-            </form>
           </div>
         </div>
       </div>

@@ -18,6 +18,10 @@ const io = new Server(serverHttp, {
 
 io.on("connection", (socket) => {
   console.log(`Usuário fez conexão: ${socket.id}`)
+
+  socket.on("send_message", (payload) => {
+    socket.broadcast.emit("receive_message", payload)
+  })
 })
 
 serverHttp.listen(process.env.SERVER_PORT, () =>
