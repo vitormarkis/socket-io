@@ -12,15 +12,14 @@ const serverHttp = http.createServer(app)
 
 const io = new Server(serverHttp, {
   cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
+    origin: "*",
   },
+})
+
+io.on("connection", (socket) => {
+  console.log(`Usuário fez conexão: ${socket.id}`)
 })
 
 serverHttp.listen(process.env.SERVER_PORT, () =>
   console.log("Server is running on port " + process.env.SERVER_PORT)
 )
-
-io.on("connection", (socket) => {
-  console.log(socket.id)
-})
