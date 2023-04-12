@@ -3,7 +3,11 @@
 @tailwind utilities;
 
 :root {
-  font-family: "Ubuntu";
+  font-family: "Inter";
+}
+
+.font-spec {
+  font-family: 'Outfit';
 }
 
 .scroll-thin::-webkit-scrollbar {

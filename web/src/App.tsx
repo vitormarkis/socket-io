@@ -25,7 +25,6 @@ const App: React.FC = () => {
   const { room } = useParams()
 
   useEffect(() => {
-
     socket.on("receive_message", data => {
       const { message, username } = messageSchema.parse(data)
 
@@ -47,23 +46,23 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="h-screen bg-zinc-100 flex flex-col ">
+    <div className="h-screen bg-slate-900 flex flex-col ">
       <Header />
       <div className="flex items-center justify-center">
-        <div className="flex flex-col max-w-2xl w-full border-zinc-300 border-x shadow-lg h-full">
-          <div className="h-[calc(100vh_-_48px)] relative grow bg-white overflow-hidden">
+        <div className="flex flex-col max-w-2xl w-full border-slate-700 border-x shadow-lg h-full">
+          <div className="h-[calc(100vh_-_62px)] relative grow bg-slate-800 overflow-hidden">
             <div className="overflow-x-hidden overflow-y-scroll flex flex-col gap-3 h-full scroll-thin">
-              <div className="px-5 pt-5 flex flex-col gap-3">
+              <div className="px-5 pt-5 flex flex-col gap-3 leading-none">
                 {messages.map(msg => (
                   <>
                     {user && user.username === msg.username ? (
-                      <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300 self-end">
-                        <p className="text-stone-800 font-bold text-right">{msg.username}</p>
-                        <p className="text-stone-600 text-right">{msg.message}</p>
+                      <div className="flex flex-col border-b bg-white rounded-lg max-w-11/12 p-2 gap-1 border-slate-700 self-end">
+                        <p className="text-stone-800 font-bold text-right text-sm">{msg.username}</p>
+                        <p className="text-stone-600">{msg.message}</p>
                       </div>
                     ) : (
-                      <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300">
-                        <p className="text-stone-800 font-bold">{msg.username}</p>
+                      <div className="flex flex-col border-b bg-white rounded-lg max-w-11/12 p-2 gap-1 border-slate-700">
+                        <p className="text-stone-800 font-bold text-sm">{msg.username}</p>
                         <p className="text-stone-600">{msg.message}</p>
                       </div>
                     )}
@@ -92,7 +91,7 @@ const App: React.FC = () => {
                   />
                   <button
                     type="submit"
-                    className="bg-black rounded-lg w-fit ml-auto font-thin text-white px-6 py-2 shadow-lg shadow-black/30"
+                    className="bg-white rounded-lg w-fit ml-auto text-black px-6 py-2 shadow-lg shadow-black/30"
                   >
                     Enviar
                   </button>
