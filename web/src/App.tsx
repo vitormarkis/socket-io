@@ -1,6 +1,9 @@
 import React from "react"
 import { io } from "socket.io-client"
 import { SubmitHandler, useForm } from "react-hook-form"
+import { useAuth } from "./contexts/Auth"
+import { reqAuth } from "./helpers"
+import Header from "./components/Header"
 
 const URL = process.env.NODE_ENV === "production" ? undefined : "http://localhost:3030"
 
@@ -12,56 +15,127 @@ interface IMessage {
 }
 
 const App: React.FC = () => {
-  const [username, setUsername] = React.useState("vitormarkis")
   const { register, handleSubmit, reset } = useForm<IMessage>()
+  const { user } = useAuth()
 
-  const submitHandler: SubmitHandler<IMessage> = async formData => {}
+  const submitHandler = async (formData: IMessage) => {
+    try {
+      const { onSuccess } = await reqAuth(user)
+      onSuccess(() => {
+        reset()
+        console.log(formData)
+      })
+    } catch (error) {
+      if (error instanceof Error) alert(error)
+    }
+  }
 
   return (
     <div className="h-screen bg-zinc-200 flex flex-col ">
-      <div className="shadow-lg bg-white relative z-10">
-        <div className="max-w-7xl w-full px-4 py-3 flex items-center justify-between mx-auto">
-          <div>
-            <p className="font-bold my-auto">Logo</p>
-          </div>
-          <div></div>
-        </div>
-      </div>
+      <Header />
       <div className="flex items-center justify-center">
         <div className="flex flex-col max-w-4xl w-full border-zinc-300 border-x shadow-lg h-full">
           <div className="h-[calc(100vh_-_48px)] relative grow bg-white overflow-hidden">
             <div className="overflow-x-hidden overflow-y-scroll flex flex-col gap-3 h-full scroll-thin">
               <div className="px-5 ">
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
-                <div>Lorem ips
-              </div>um dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur laudantium accusantium sint?</div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque accusamus
+                  veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae pariatur
+                  laudantium accusantium sint?
+                </div>
+                <div>Lorem ips</div>um dolor sit amet consectetur adipisicing elit. Amet, eveniet facilis atque
+                accusamus veritatis sit hic ullam nobis repudiandae non ipsam harum, cum officiis molestiae quae
+                pariatur laudantium accusantium sint?
+              </div>
               <div className="basis-[90px] shrink-0" />
             </div>
             <form
               onSubmit={handleSubmit(submitHandler)}
               className="p-6 flex flex-col absolute w-full bottom-0 bg-gradient-to-b from-transparent to-black/50"
             >
-              <input
-                type="text"
-                hidden
-                {...register("username")}
-                defaultValue={username}
-              />
+              {user ? (
+                <input
+                  type="text"
+                  hidden
+                  {...register("username")}
+                  defaultValue={user.username}
+                />
+              ) : null}
               <div className="flex gap-4">
                 <input
                   type="text"

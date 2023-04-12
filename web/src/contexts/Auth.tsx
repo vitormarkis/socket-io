@@ -1,6 +1,6 @@
 import React, { useCallback } from "react"
 
-interface IUser {
+export interface IUser {
   username: string
 }
 
@@ -17,19 +17,16 @@ export function AuthProvider(props: { children: React.ReactNode }) {
 
   const login = useCallback(
     async (username: string) => {
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      await new Promise(resolve => setTimeout(resolve, 1200))
       setUser({ username })
     },
     [user]
   )
 
-  const logout = useCallback(
-    async () => {
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      setUser(null)
-    },
-    [user]
-  )
+  const logout = useCallback(async () => {
+    await new Promise(resolve => setTimeout(resolve, 200))
+    setUser(null)
+  }, [user])
 
   return (
     <AuthContext.Provider
