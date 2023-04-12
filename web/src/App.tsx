@@ -66,12 +66,12 @@ const App: React.FC = () => {
                 <input
                   type="text"
                   {...register("message")}
-                  className="bg-white shadow-xl shadow-black/30 outline-none px-6 py-2 rounded-lg border border-zinc-400 text-stone-800 w-full"
+                  className="bg-white shadow-xl shadow-black/30 placeholder:text-zinc-500 outline-none px-6 py-2 rounded-lg border border-zinc-400 text-stone-800 w-full"
                   placeholder="Sua mensagem..."
                 />
                 <button
                   type="submit"
-                  className="bg-green-600 rounded-lg w-fit ml-auto font-thin text-white px-6 py-2 shadow-lg shadow-black/30"
+                  className="bg-black rounded-lg w-fit ml-auto font-thin text-white px-6 py-2 shadow-lg shadow-black/30"
                 >
                   Enviar
                 </button>
