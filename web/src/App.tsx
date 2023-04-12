@@ -4,23 +4,22 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import { useAuth } from "./contexts/Auth"
 import { reqAuth } from "./helpers"
 import Header from "./components/Header"
+import { IMessage, messageSchema } from "./schemas/messages"
 
 const URL = process.env.NODE_ENV === "production" ? undefined : "http://localhost:3030"
 
-export const socket = io("http://localhost:3030")
-
-interface IMessage {
-  username: string
-  message: string
-}
+export const socket = io(URL as string)
 
 const App: React.FC = () => {
+  const [messages, setMessages] = React.useState([] as IMessage[])
   const { register, handleSubmit, reset } = useForm<IMessage>()
   const { user } = useAuth()
 
   useEffect(() => {
     socket.on("receive_message", data => {
-      console.log(data)
+      const { message, username } = messageSchema.parse(data)
+
+      setMessages(prev => [...prev, { message, username }])
     })
   }, [socket])
 
@@ -44,36 +43,21 @@ const App: React.FC = () => {
           <div className="h-[calc(100vh_-_48px)] relative grow bg-white overflow-hidden">
             <div className="overflow-x-hidden overflow-y-scroll flex flex-col gap-3 h-full scroll-thin">
               <div className="px-5 pt-5 flex flex-col gap-3">
-                <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300">
-                  <p className="text-stone-800 font-bold">Vitor</p>
-                  <p className="text-stone-600">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat suscipit minus nemo perspiciatis?
-                    Nobis sapiente sunt, in, omnis unde quibusdam debitis voluptatibus reprehenderit ut excepturi eos
-                    iure voluptate distinctio corrupti?
-                  </p>
-                </div>
-                <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300">
-                  <p className="text-stone-800 font-bold">Vitor</p>
-                  <p className="text-stone-600">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat suscipit minus nemo perspiciatis?
-                    Nobis sapiente sunt, in, omnis unde quibusdam debitis voluptatibus reprehenderit ut excepturi eos
-                    iure voluptate distinctio corrupti?
-                  </p>
-                </div>
-                <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300">
-                  <p className="text-stone-800 font-bold">Vitor</p>
-                  <p className="text-stone-600">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit
-                  </p>
-                </div>
-                <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300 self-end">
-                  <p className="text-stone-800 font-bold text-right">Kauan</p>
-                  <p className="text-stone-600">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Placeat suscipit minus nemo perspiciatis?
-                    Nobis sapiente sunt, in, omnis unde quibusdam debitis voluptatibus reprehenderit ut excepturi eos
-                    iure voluptate distinctio corrupti?
-                  </p>
-                </div>
+                {messages.map(msg => (
+                  <>
+                    {user && user.username === msg.username ? (
+                      <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300 self-end">
+                        <p className="text-stone-800 font-bold text-right">{msg.username}</p>
+                        <p className="text-stone-600">{msg.message}</p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col border-b bg-zinc-100 rounded-lg w-11/12 p-3 border-zinc-300">
+                        <p className="text-stone-800 font-bold">{msg.username}</p>
+                        <p className="text-stone-600">{msg.message}</p>
+                      </div>
+                    )}
+                  </>
+                ))}
                 <div className="basis-[90px] shrink-0" />
               </div>
               <form
