@@ -19,8 +19,14 @@ const io = new Server(serverHttp, {
 io.on("connection", (socket) => {
   console.log(`Usuário fez conexão: ${socket.id}`)
 
+  socket.on("join_room", (room) => {
+    console.log(`${socket.id} entrando na sala ${room}`)
+    socket.join(room)
+  })
+
   socket.on("send_message", (payload) => {
-    socket.broadcast.emit("receive_message", payload)
+    socket.to(payload.room).emit("receive_message", payload)
+    // socket.broadcast.emit("receive_message", payload)
   })
 })
 

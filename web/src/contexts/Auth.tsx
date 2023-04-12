@@ -1,4 +1,4 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useMemo } from "react"
 
 export interface IUser {
   username: string
@@ -13,11 +13,14 @@ interface IUserContext {
 const AuthContext = React.createContext({} as IUserContext)
 
 export function AuthProvider(props: { children: React.ReactNode }) {
-  const [user, setUser] = React.useState<IUser | null>(null)
+  const [user, setUser] = React.useState<IUser | null>(
+    (JSON.parse(localStorage.getItem("user")!) as IUser) ?? null
+  )
 
   const login = useCallback(
     async (username: string) => {
       await new Promise(resolve => setTimeout(resolve, 1200))
+      localStorage.setItem("user", JSON.stringify({ username }))
       setUser({ username })
     },
     [user]
@@ -25,6 +28,7 @@ export function AuthProvider(props: { children: React.ReactNode }) {
 
   const logout = useCallback(async () => {
     await new Promise(resolve => setTimeout(resolve, 200))
+    localStorage.removeItem("user")
     setUser(null)
   }, [user])
 
